@@ -1,0 +1,27 @@
+# aScoreboard plugin configuration
+
+# plugin command prefix
+prefix: "<gold>[ac] </gold>"
+
+# enable command
+# if disabled, the plugin can only be accessed from the api
+scoreboard-command: true
+
+# How fast should the scoreboard update (in ticks)?
+# Setting this too low may cause ping issues due to increased packets
+scoreboard-update-speed: 20
+
+# what scoreboard should be shown if nothing else is selected
+# leave empty if no scoreboard should be shown
+default-scoreboard: ""
+
+# scoreboards
+scoreboards:
+  exampleboard:
+    title: "<aqua>aScoreboard</aqua>"
+    lines:
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
