@@ -1,5 +1,6 @@
 package io.github.viimeinen1.ascoreboard;
 
+import io.github.viimeinen1.ascoreboard.scoreboard.ScoreboardListener;
 import io.github.viimeinen1.amsg.aMsg;
 import io.github.viimeinen1.ascoreboard.commands.aScoreboardCommand;
 import io.github.viimeinen1.ascoreboard.scoreboard.ScoreboardManager;
@@ -50,6 +51,9 @@ public class aScoreboard extends JavaPlugin {
             aMsg.log(aMsg.LOG_COLOR.YELLOW, "Plugin command is disabled.", "Only api access allowed.");
         }
 
+        getServer().getPluginManager().registerEvents(new ScoreboardListener(), plugin);
+
+        ScoreboardManager.reloadPlayerlist();
         ScoreboardManager.startScoreboardTask();
 
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard successfully loaded!");
@@ -58,17 +62,17 @@ public class aScoreboard extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        aMsg.log(aMsg.LOG_COLOR.YELLOW, "disabling plugin...");
+        aMsg.log(aMsg.LOG_COLOR.GREEN, "disabling plugin...");
 
         ScoreboardManager.stopScoreboardTask();
 
-        aMsg.log(aMsg.LOG_COLOR.YELLOW, "aScoreboard successfully disabled!");
+        aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard successfully disabled!");
     }
 
     public static void reload() {
         aMsg.log(aMsg.LOG_COLOR.GREEN, "Reloading plugin...");
 
-        plugin.saveDefaultConfig();
+        plugin.reloadConfig();
         ConfigData.loadConfig();
 
         aMsg.prefix(MiniMessage.miniMessage().deserialize(ConfigData.pluginPrefix));
@@ -81,16 +85,17 @@ public class aScoreboard extends JavaPlugin {
             aMsg.log(aMsg.LOG_COLOR.YELLOW, "PlaceholderAPI not detected!", "Placeholders from PlaceholderAPI will not work.");
         }
 
-        if (ConfigData.commandEnabled) {
-            plugin.getLifecycleManager().registerEventHandler(
-                LifecycleEvents.COMMANDS,
-                c -> c.registrar().register(aScoreboardCommand.createCommand(), List.of("scoreboard"))
-            );
-        } else {
-            aMsg.log(aMsg.LOG_COLOR.YELLOW, "Plugin command is disabled.", "Only api access allowed.");
-        }
+//        if (ConfigData.commandEnabled) {
+//            plugin.getLifecycleManager().registerEventHandler(
+//                LifecycleEvents.COMMANDS,
+//                c -> c.registrar().register(aScoreboardCommand.createCommand(), List.of("scoreboard"))
+//            );
+//        } else {
+//            aMsg.log(aMsg.LOG_COLOR.YELLOW, "Plugin command is disabled.", "Only api access allowed.");
+//        }
 
         ScoreboardManager.stopScoreboardTask();
+        ScoreboardManager.reloadPlayerlist();
         ScoreboardManager.startScoreboardTask();
 
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard reloaded!");

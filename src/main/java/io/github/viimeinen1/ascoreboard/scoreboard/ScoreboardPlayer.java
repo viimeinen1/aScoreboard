@@ -8,12 +8,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class ScoreboardPlayer {
 
-    private Scoreboard scoreboard;
+    private Scoreboard scoreboard = null;
     public final Player player;
     public FastBoard board;
 
-    public ScoreboardPlayer(@NotNull Player player, @Nullable Scoreboard scoreboard) {
-        this.scoreboard = scoreboard;
+    public ScoreboardPlayer(@NotNull Player player) {
         this.player = player;
     }
 
@@ -36,7 +35,7 @@ public class ScoreboardPlayer {
     public void updateBoard(boolean fullUpdate) {
         if (scoreboard != null) scoreboard.updateForPlayer(this, fullUpdate);
         else if (ScoreboardManager.defaultScoreboard != null) ScoreboardManager.defaultScoreboard.updateForPlayer(this, fullUpdate);
-        else {
+        else if (board != null) {
             board.delete();
             board = null;
         }

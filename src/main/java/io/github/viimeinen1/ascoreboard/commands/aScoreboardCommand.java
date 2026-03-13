@@ -1,12 +1,14 @@
 package io.github.viimeinen1.ascoreboard.commands;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.viimeinen1.amsg.aMsg;
 import io.github.viimeinen1.ascoreboard.aScoreboard;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 
 public class aScoreboardCommand {
 
@@ -14,6 +16,16 @@ public class aScoreboardCommand {
         return Commands.literal("ascoreboard")
             .then(Commands.literal("reload")
                 .executes(aScoreboardCommand::reload)
+            )
+            .then(Commands.literal("set")
+                .then(Commands.argument("scoreboard", StringArgumentType.word())
+                    .then(Commands.argument("player", ArgumentTypes.player())
+                        .then(Commands.literal("-s")
+                            .executes(null)
+                        )
+                        .executes(null)
+                    )
+                )
             )
             .build();
     }

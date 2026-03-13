@@ -1,6 +1,6 @@
 name: aScoreboard
 version: 0.1.0
-main: com.github.viimeinen1.ascoreboard.aScoreboard
+main: io.github.viimeinen1.ascoreboard.aScoreboard
 description: a Scoreboard plugin with api support
 author: viimeinen
 api-version: '1.21.11'

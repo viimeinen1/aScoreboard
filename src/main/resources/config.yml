@@ -12,16 +12,29 @@ scoreboard-command: true
 scoreboard-update-speed: 20
 
 # what scoreboard should be shown if nothing else is selected
-# leave empty if no scoreboard should be shown
-default-scoreboard: ""
+# leave empty if no scoreboard should be shown by default
+default-scoreboard: "exampleboard"
 
 # scoreboards
 scoreboards:
   exampleboard:
     title: "<aqua>aScoreboard</aqua>"
     lines:
+      - "a Scoreboard plugin"
+      - "and a library"
       - ""
+      - "author: viimeinen"
       - ""
+      - "modify config to change the scoreboard"
       - ""
-      - ""
-      - ""
+      - "%time_long%"
+
+# time format
+# available with %time_<format>%, for example %time_short% and %time_long%
+# use https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html as a reference
+timeformats:
+  short: HH':'mm':'ss
+  long: KK':'mm':'ss a MM/dd/yyyy
+
+# timezone for time
+timezone: "UTC"
