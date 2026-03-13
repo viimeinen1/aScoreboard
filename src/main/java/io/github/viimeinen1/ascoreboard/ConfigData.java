@@ -1,6 +1,5 @@
 package io.github.viimeinen1.ascoreboard;
 
-import io.github.viimeinen1.ascoreboard.scoreboard.Scoreboard;
 import io.github.viimeinen1.ascoreboard.scoreboard.ScoreboardManager;
 
 import java.text.SimpleDateFormat;
@@ -12,7 +11,6 @@ public class ConfigData {
     public static String pluginPrefix;
     public static boolean commandEnabled;
     public static int updateSpeed;
-    public static HashMap<String, Scoreboard> scoreboards = new HashMap<>();
     public static String defaultScoreboard;
     public static HashMap<String, SimpleDateFormat> timeFormats = new HashMap<>();
     public static String timezone;
@@ -28,12 +26,12 @@ public class ConfigData {
         if (scoreboardSection != null) {
             for (var key : scoreboardSection.getKeys(false)) {
                 var board = ScoreboardManager.parseScoreboard(scoreboardSection.getConfigurationSection(key));
-                if (board != null) scoreboards.put(key, board);
+                if (board != null) ScoreboardManager.scoreboards.put(key, board);
             }
         }
 
         defaultScoreboard = config.getString("default-scoreboard", "");
-        ScoreboardManager.defaultScoreboard = scoreboards.get(defaultScoreboard);
+        ScoreboardManager.defaultScoreboard = ScoreboardManager.scoreboards.get(defaultScoreboard);
 
         timezone = config.getString("timezone", "UTC");
 

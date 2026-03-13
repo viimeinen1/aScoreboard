@@ -1,10 +1,11 @@
 group = "io.github.viimeinen1.ascoreboard"
-version = "0.1.0"
-description = "a scoreboard plugin"
+version = "1.0.0"
+description = "a Scoreboard plugin and library"
 
 plugins {
     id("java-library")
     id("com.gradleup.shadow") version "9.3.2"
+    id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
 repositories {
@@ -29,4 +30,37 @@ java {
 
 tasks.shadowJar {
     relocate("fr.mrmicky.fastboard", "com.github.viimeinen1.ascoreboard.fastboard")
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+
+    signAllPublications()
+}
+
+mavenPublishing {
+    coordinates(group.toString(), name.toString(), version.toString())
+
+    pom {
+        name.set("aScoreboard")
+        description.set("Scoreboard plugin and library")
+        inceptionYear.set("2026")
+        url.set("https://github.com/viimeinen1/ascoreboard/")
+        licenses {
+            license {
+                name.set("MIT")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+        developers {
+            developer {
+                id.set("viimeinen1")
+                name.set("viimeinen1")
+                url.set("https://github.com/viimeinen1/")
+            }
+        }
+        scm {
+            url.set("https://github.com/viimeinen1/ascoreboard/")
+        }
+    }
 }

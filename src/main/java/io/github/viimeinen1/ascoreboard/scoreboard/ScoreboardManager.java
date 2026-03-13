@@ -13,10 +13,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ScoreboardManager {
+
+    public static HashMap<String, Scoreboard> scoreboards = new HashMap<>();
 
     private static final ConcurrentHashMap<UUID, ScoreboardPlayer> players = new ConcurrentHashMap<>();
     public static Scoreboard defaultScoreboard = null;

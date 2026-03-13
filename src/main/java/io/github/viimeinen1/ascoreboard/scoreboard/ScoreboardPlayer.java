@@ -1,7 +1,6 @@
 package io.github.viimeinen1.ascoreboard.scoreboard;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
-import io.github.viimeinen1.ascoreboard.ConfigData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +21,7 @@ public class ScoreboardPlayer {
     }
 
     public void setScoreboard(@Nullable String scoreboardKey) {
-        this.scoreboard = ConfigData.scoreboards.get(scoreboardKey);
+        this.scoreboard = ScoreboardManager.scoreboards.get(scoreboardKey);
         updateBoard(true);
     }
 

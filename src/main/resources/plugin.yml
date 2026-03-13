@@ -1,8 +1,13 @@
 name: aScoreboard
-version: 0.1.0
+version: 1.0.0
 main: io.github.viimeinen1.ascoreboard.aScoreboard
 description: a Scoreboard plugin with api support
 author: viimeinen
 api-version: '1.21.11'
 
 softdepend: ["PlaceholderAPI"]
+
+permissions:
+  ascoreboard.manage:
+    description: "Manage scoreboards trough commands"
+    default: op
