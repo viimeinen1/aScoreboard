@@ -1,0 +1,1 @@
+## a Scoreboard plugin + library
