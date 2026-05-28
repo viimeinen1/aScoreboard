@@ -26,7 +26,7 @@ public class aScoreboardCommand {
             .then(Commands.literal("set")
                 .requires(c -> c.getSender().isOp() || c.getSender().hasPermission("ascoreboard.manage"))
                 .then(Commands.argument("scoreboard", StringArgumentType.word())
-                    .suggests((ctx, builder) -> CompletableFuture.supplyAsync(() -> {
+                    .suggests((_, builder) -> CompletableFuture.supplyAsync(() -> {
                         ScoreboardManager.scoreboards.keySet().forEach(builder::suggest);
                         return builder.build();
                     }))
@@ -38,7 +38,7 @@ public class aScoreboardCommand {
             .then(Commands.literal("setdefault")
                 .requires(c -> c.getSender().isOp() || c.getSender().hasPermission("ascoreboard.manage"))
                 .then(Commands.argument("scoreboard", StringArgumentType.word())
-                    .suggests((ctx, builder) -> CompletableFuture.supplyAsync(() -> {
+                    .suggests((_, builder) -> CompletableFuture.supplyAsync(() -> {
                         ScoreboardManager.scoreboards.keySet().forEach(builder::suggest);
                         return builder.build();
                     }))
