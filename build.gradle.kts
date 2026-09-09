@@ -1,11 +1,11 @@
 group = "io.github.viimeinen1.ascoreboard"
-version = "1.0.0"
+version = "1.1.0"
 description = "a Scoreboard plugin and library"
 
 plugins {
   id("java-library")
-  id("com.gradleup.shadow") version "9.3.2"
-  id("com.vanniktech.maven.publish") version "0.34.0"
+  id("com.gradleup.shadow") version "9.6.1"
+  id("com.vanniktech.maven.publish") version "0.37.0"
 }
 
 repositories {
@@ -18,9 +18,9 @@ repositories {
 }
 
 dependencies {
-  compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
-  compileOnly("me.clip:placeholderapi:2.12.2")
-  implementation("fr.mrmicky:fastboard:2.1.5")
+  compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+  compileOnly("me.clip:placeholderapi:2.12.3")
+  implementation("fr.mrmicky:fastboard:2.2.1")
   implementation("io.github.viimeinen1.amsg:aMsg:1.1.2")
 }
 
@@ -29,7 +29,7 @@ java {
 }
 
 tasks.shadowJar {
-  relocate("fr.mrmicky.fastboard", "com.github.viimeinen1.ascoreboard.fastboard")
+  relocate("fr.mrmicky.fastboard", "io.github.viimeinen1.ascoreboard.fastboard")
 }
 
 mavenPublishing {

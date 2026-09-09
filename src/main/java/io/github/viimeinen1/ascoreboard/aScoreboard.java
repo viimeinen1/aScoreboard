@@ -16,9 +16,12 @@ public class aScoreboard extends JavaPlugin {
     public static boolean placeholderAPIDetected = false;
 
     private static JavaPlugin plugin;
+    private static final ScoreboardManager scoreboardManager = new ScoreboardManager();
     public static JavaPlugin getPlugin() {
         return plugin;
     }
+
+    public static ScoreboardManager getManager() { return scoreboardManager; }
 
     @Override
     public void onEnable() {
@@ -53,8 +56,8 @@ public class aScoreboard extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ScoreboardListener(), plugin);
 
-        ScoreboardManager.reloadPlayerlist();
-        ScoreboardManager.startScoreboardTask();
+        scoreboardManager.reloadPlayerlist();
+        scoreboardManager.startScoreboardTask();
 
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard successfully loaded!");
     }
@@ -64,7 +67,7 @@ public class aScoreboard extends JavaPlugin {
         super.onDisable();
         aMsg.log(aMsg.LOG_COLOR.GREEN, "disabling plugin...");
 
-        ScoreboardManager.stopScoreboardTask();
+        scoreboardManager.stopScoreboardTask();
 
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard successfully disabled!");
     }
@@ -85,18 +88,9 @@ public class aScoreboard extends JavaPlugin {
             aMsg.log(aMsg.LOG_COLOR.YELLOW, "PlaceholderAPI not detected!", "Placeholders from PlaceholderAPI will not work.");
         }
 
-//        if (ConfigData.commandEnabled) {
-//            plugin.getLifecycleManager().registerEventHandler(
-//                LifecycleEvents.COMMANDS,
-//                c -> c.registrar().register(aScoreboardCommand.createCommand(), List.of("scoreboard"))
-//            );
-//        } else {
-//            aMsg.log(aMsg.LOG_COLOR.YELLOW, "Plugin command is disabled.", "Only api access allowed.");
-//        }
-
-        ScoreboardManager.stopScoreboardTask();
-        ScoreboardManager.reloadPlayerlist();
-        ScoreboardManager.startScoreboardTask();
+        scoreboardManager.stopScoreboardTask();
+        scoreboardManager.reloadPlayerlist();
+        scoreboardManager.startScoreboardTask();
 
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard reloaded!");
     }

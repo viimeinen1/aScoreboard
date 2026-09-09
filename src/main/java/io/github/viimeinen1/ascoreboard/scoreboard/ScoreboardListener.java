@@ -1,5 +1,6 @@
 package io.github.viimeinen1.ascoreboard.scoreboard;
 
+import io.github.viimeinen1.ascoreboard.aScoreboard;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -9,12 +10,12 @@ public class ScoreboardListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        ScoreboardManager.addPlayer(event.getPlayer());
+        aScoreboard.getManager().addPlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        ScoreboardManager.removePlayer(event.getPlayer());
+        aScoreboard.getManager().removePlayer(event.getPlayer());
     }
 
 }

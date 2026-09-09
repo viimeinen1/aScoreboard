@@ -7,7 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.github.viimeinen1.amsg.aMsg;
 import io.github.viimeinen1.ascoreboard.aScoreboard;
-import io.github.viimeinen1.ascoreboard.scoreboard.ScoreboardManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -27,7 +26,7 @@ public class aScoreboardCommand {
                 .requires(c -> c.getSender().isOp() || c.getSender().hasPermission("ascoreboard.manage"))
                 .then(Commands.argument("scoreboard", StringArgumentType.word())
                     .suggests((_, builder) -> CompletableFuture.supplyAsync(() -> {
-                        ScoreboardManager.scoreboards.keySet().forEach(builder::suggest);
+                        aScoreboard.getManager().scoreboards.keySet().forEach(builder::suggest);
                         return builder.build();
                     }))
                     .then(Commands.argument("player", ArgumentTypes.player())
@@ -39,7 +38,7 @@ public class aScoreboardCommand {
                 .requires(c -> c.getSender().isOp() || c.getSender().hasPermission("ascoreboard.manage"))
                 .then(Commands.argument("scoreboard", StringArgumentType.word())
                     .suggests((_, builder) -> CompletableFuture.supplyAsync(() -> {
-                        ScoreboardManager.scoreboards.keySet().forEach(builder::suggest);
+                        aScoreboard.getManager().scoreboards.keySet().forEach(builder::suggest);
                         return builder.build();
                     }))
                     .executes(aScoreboardCommand::setDefaultScoreboard)
@@ -60,13 +59,13 @@ public class aScoreboardCommand {
         PlayerSelectorArgumentResolver resolver = ctx.getArgument("player", PlayerSelectorArgumentResolver.class);
         Player player = resolver.resolve(ctx.getSource()).getFirst();
 
-        var board = ScoreboardManager.scoreboards.get(name);
+        var board = aScoreboard.getManager().scoreboards.get(name);
         if (board == null) {
             aMsg.send(ctx.getSource().getSender(), "<red>No such scoreboard exists!");
             return Command.SINGLE_SUCCESS;
         }
 
-        ScoreboardManager.getPlayer(player).setScoreboard(board);
+        aScoreboard.getManager().getPlayer(player).setScoreboard(board);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -74,18 +73,18 @@ public class aScoreboardCommand {
         String name = StringArgumentType.getString(ctx, "scoreboard");
 
         if ("none".equalsIgnoreCase(name)) {
-            ScoreboardManager.defaultScoreboard = null;
+            aScoreboard.getManager().defaultScoreboard = null;
             return Command.SINGLE_SUCCESS;
         }
 
-        var board = ScoreboardManager.scoreboards.get(name);
+        var board = aScoreboard.getManager().scoreboards.get(name);
 
         if (board == null) {
             aMsg.send(ctx.getSource().getSender(), "<red>No such scoreboard exists!");
             return Command.SINGLE_SUCCESS;
         }
 
-        ScoreboardManager.defaultScoreboard = board;
+        aScoreboard.getManager().defaultScoreboard = board;
         return Command.SINGLE_SUCCESS;
     }
 

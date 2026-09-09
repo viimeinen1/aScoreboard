@@ -2,9 +2,9 @@ package io.github.viimeinen1.ascoreboard.scoreboard;
 
 import io.github.viimeinen1.ascoreboard.ConfigData;
 import io.github.viimeinen1.ascoreboard.aScoreboard;
+import io.github.viimeinen1.ascoreboard.placeholders.Placeholder;
+import io.github.viimeinen1.ascoreboard.placeholders.PlaceholderConsumer;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -17,50 +17,55 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ScoreboardManager {
+public class ScoreboardManager extends PlaceholderConsumer {
+    public HashMap<String, Scoreboard> scoreboards = new HashMap<>();
+    private final ConcurrentHashMap<UUID, ScoreboardPlayer> players = new ConcurrentHashMap<>();
+    public Scoreboard defaultScoreboard = null;
 
-    public static HashMap<String, Scoreboard> scoreboards = new HashMap<>();
+    public ScoreboardManager() {
+        addPlaceholder(new NamePlaceholder());
+        addPlaceholder(new PlayeramountPlaceholder());
+        addPlaceholder(new TimePlaceholder());
+        addPlaceholder(new PlaceholderAPIPlaceholder());
+    }
 
-    private static final ConcurrentHashMap<UUID, ScoreboardPlayer> players = new ConcurrentHashMap<>();
-    public static Scoreboard defaultScoreboard = null;
-
-    public static void addPlayer(Player player) {
+    public void addPlayer(Player player) {
         var scoreboardPlayer = new ScoreboardPlayer(player);
         scoreboardPlayer.updateBoard(true);
         players.put(player.getUniqueId(), scoreboardPlayer);
     }
 
-    public static void removePlayer(Player player) {
+    public void removePlayer(Player player) {
         var scoreboardPlayer = players.remove(player.getUniqueId());
         if (scoreboardPlayer != null && scoreboardPlayer.board != null) scoreboardPlayer.board.delete();
     }
 
-    public static ScoreboardPlayer getPlayer(Player player) {
+    public ScoreboardPlayer getPlayer(Player player) {
         return players.get(player.getUniqueId());
     }
 
-    public static void reloadPlayerlist() {
+    public void reloadPlayerlist() {
         players.values().stream()
             .map(pl -> pl.player)
             .filter(pl -> !pl.isOnline())
-            .forEach(ScoreboardManager::removePlayer);
+            .forEach(this::removePlayer);
 
         Bukkit.getOnlinePlayers().stream()
             .filter(pl -> !players.containsKey(pl.getUniqueId()))
-            .forEach(ScoreboardManager::addPlayer);
+            .forEach(this::addPlayer);
     }
 
-    public static void updateAll() {
+    public void updateAll() {
         updateAll(false);
     }
 
-    public static void updateAll(boolean fullUpdate) {
+    public void updateAll(boolean fullUpdate) {
         players.values().forEach(pl -> pl.updateBoard(fullUpdate));
     }
 
-    public static void disableScoreboard(@NotNull Scoreboard scoreboard, @Nullable Scoreboard replacement) {
+    public void disableScoreboard(@NotNull Scoreboard scoreboard, @Nullable Scoreboard replacement) {
         Bukkit.getOnlinePlayers().stream()
-            .map(ScoreboardManager::getPlayer)
+            .map(this::getPlayer)
             .filter(pl -> scoreboard.equals(pl.getScoreboard()))
             .forEach(pl -> {
                 pl.setScoreboard(replacement);
@@ -68,19 +73,9 @@ public class ScoreboardManager {
             });
     }
 
-    public static Component applyPlaceholders(Player player, String line) {
-        if (aScoreboard.placeholderAPIDetected) line = PlaceholderAPI.setPlaceholders(player, line);
-        line = line.replaceAll("%name%", player.getName());
-        line = line.replaceAll("%players%", String.valueOf(Bukkit.getOnlinePlayers().size()));
-        for (var entry : ConfigData.timeFormats.entrySet()) {
-            line = line.replaceAll("%time_" + entry.getKey() + "%", entry.getValue().format(new Date()));
-        }
-        return MiniMessage.miniMessage().deserialize(line);
-    }
+    private BukkitTask scoreboardTask = null;
 
-    private static BukkitTask scoreboardTask = null;
-
-    public static void startScoreboardTask() {
+    public void startScoreboardTask() {
         if (scoreboardTask != null) return;
 
         updateAll(true);
@@ -93,18 +88,50 @@ public class ScoreboardManager {
         );
     }
 
-    public static void stopScoreboardTask() {
+    public void stopScoreboardTask() {
         if (scoreboardTask == null) return;
         scoreboardTask.cancel();
         scoreboardTask = null;
     }
 
-    public static @Nullable Scoreboard parseScoreboard(@Nullable ConfigurationSection conf) {
+    public @Nullable Scoreboard parseScoreboard(@Nullable ConfigurationSection conf) {
         if (conf == null) return null;
         if (!conf.contains("title") || !conf.contains("lines")) return null;
         var title = conf.getString("title", "");
         var lines = conf.getStringList("lines");
         return new Scoreboard(title, lines);
+    }
+
+    private static class NamePlaceholder implements Placeholder {
+        @Override
+        public String apply(Player player, String line) {
+            return line.replace("%player%", player.getName());
+        }
+    }
+
+    private static class PlayeramountPlaceholder implements Placeholder {
+        @Override
+        public String apply(Player player, String line) {
+            return line.replace("%players%", String.valueOf(Bukkit.getOnlinePlayers().size()));
+        }
+    }
+
+    private static class TimePlaceholder implements Placeholder {
+        @Override
+        public String apply(Player player, String line) {
+            for (var entry : ConfigData.timeFormats.entrySet()) {
+                line = line.replaceAll("%time_" + entry.getKey() + "%", entry.getValue().format(new Date()));
+            }
+            return line;
+        }
+    }
+
+    private static class PlaceholderAPIPlaceholder implements Placeholder {
+        @Override
+        public String apply(Player player, String line) {
+            if (!aScoreboard.placeholderAPIDetected) return line;
+            return PlaceholderAPI.setPlaceholders(player, line);
+        }
     }
 
 }

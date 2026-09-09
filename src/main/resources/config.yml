@@ -16,6 +16,7 @@ scoreboard-update-speed: 20
 default-scoreboard: "exampleboard"
 
 # scoreboards
+# plugin provided placeholders: %name%, %players%
 scoreboards:
   exampleboard:
     title: "<aqua>aScoreboard</aqua>"
@@ -28,6 +29,14 @@ scoreboards:
       - "modify config to change the scoreboard"
       - ""
       - "%time_long%"
+  secondary:
+    title: "<red>aScoreboard</red>"
+    lines:
+      - ""
+      - "- IGN: %name%"
+      - "- players: %players%/69"
+      - "- current time: %time_short%"
+      - ""
 
 # time format
 # available with %time_<format>%, for example %time_short% and %time_long%

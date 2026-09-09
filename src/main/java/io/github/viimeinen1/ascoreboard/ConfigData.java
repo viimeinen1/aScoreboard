@@ -1,7 +1,5 @@
 package io.github.viimeinen1.ascoreboard;
 
-import io.github.viimeinen1.ascoreboard.scoreboard.ScoreboardManager;
-
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -25,13 +23,13 @@ public class ConfigData {
         var scoreboardSection = config.getConfigurationSection("scoreboards");
         if (scoreboardSection != null) {
             for (var key : scoreboardSection.getKeys(false)) {
-                var board = ScoreboardManager.parseScoreboard(scoreboardSection.getConfigurationSection(key));
-                if (board != null) ScoreboardManager.scoreboards.put(key, board);
+                var board = aScoreboard.getManager().parseScoreboard(scoreboardSection.getConfigurationSection(key));
+                if (board != null) aScoreboard.getManager().scoreboards.put(key, board);
             }
         }
 
         defaultScoreboard = config.getString("default-scoreboard", "");
-        ScoreboardManager.defaultScoreboard = ScoreboardManager.scoreboards.get(defaultScoreboard);
+        aScoreboard.getManager().defaultScoreboard = aScoreboard.getManager().scoreboards.get(defaultScoreboard);
 
         timezone = config.getString("timezone", "UTC");
 

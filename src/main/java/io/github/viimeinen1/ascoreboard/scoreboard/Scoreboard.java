@@ -1,14 +1,17 @@
 package io.github.viimeinen1.ascoreboard.scoreboard;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
+import io.github.viimeinen1.ascoreboard.aScoreboard;
+import io.github.viimeinen1.ascoreboard.placeholders.PlaceholderConsumer;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scoreboard {
+public class Scoreboard extends PlaceholderConsumer {
 
     private String title = "";
     private final List<String> lines = new ArrayList<>();
@@ -49,7 +52,9 @@ public class Scoreboard {
     }
 
     public Component getPlaceholders(Player player, String line) {
-        return ScoreboardManager.applyPlaceholders(player, line);
+        line = this.applyPlaceholders(player, line);
+        line = aScoreboard.getManager().applyPlaceholders(player, line);
+        return MiniMessage.miniMessage().deserialize(line);
     }
 
 }
