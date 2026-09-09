@@ -11,16 +11,31 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
+/**
+ * Main class
+ */
 public class aScoreboard extends JavaPlugin {
 
+    /**
+     * If plugin has detected PlaceholderAPI, and will parse its placeholders in scoreboards.
+     */
     public static boolean placeholderAPIDetected = false;
 
     private static JavaPlugin plugin;
     private static final ScoreboardManager scoreboardManager = new ScoreboardManager();
+
+    /**
+     * Get plugin instance.
+     * @return JavaPlugin instance
+     */
     public static JavaPlugin getPlugin() {
         return plugin;
     }
 
+    /**
+     * Get main ScoreboardManager for managing scoreboards.
+     * @return ScoreboardManager
+     */
     public static ScoreboardManager getManager() { return scoreboardManager; }
 
     @Override
@@ -72,6 +87,9 @@ public class aScoreboard extends JavaPlugin {
         aMsg.log(aMsg.LOG_COLOR.GREEN, "aScoreboard successfully disabled!");
     }
 
+    /**
+     * Reload plugin
+     */
     public static void reload() {
         aMsg.log(aMsg.LOG_COLOR.GREEN, "Reloading plugin...");
 

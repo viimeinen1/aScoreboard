@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Command
+ */
 public class aScoreboardCommand {
 
     public static LiteralCommandNode<CommandSourceStack> createCommand() {
