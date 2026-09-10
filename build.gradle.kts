@@ -1,5 +1,5 @@
 group = "io.github.viimeinen1.ascoreboard"
-version = "1.1.0"
+version = "1.1.1"
 description = "a Scoreboard plugin and library"
 
 plugins {
