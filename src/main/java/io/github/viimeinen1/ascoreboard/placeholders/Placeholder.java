@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 /**
  * Placeholder for {@link PlaceholderConsumer}.
  */
+@FunctionalInterface
 public interface Placeholder {
 
     /**
