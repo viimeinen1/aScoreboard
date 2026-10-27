@@ -1,5 +1,5 @@
 group = "io.github.viimeinen1.ascoreboard"
-version = "1.1.1"
+version = "1.1.2"
 description = "a Scoreboard plugin and library"
 
 plugins {
@@ -20,7 +20,7 @@ repositories {
 dependencies {
   compileOnly("io.papermc.paper:paper-api:26.2.build.+")
   compileOnly("me.clip:placeholderapi:2.12.3")
-  implementation("fr.mrmicky:fastboard:2.2.1")
+  implementation("fr.mrmicky:fastboard:2.2.2")
   implementation("io.github.viimeinen1.amsg:aMsg:1.1.2")
 }
 
