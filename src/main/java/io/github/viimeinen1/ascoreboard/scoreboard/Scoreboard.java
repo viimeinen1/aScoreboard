@@ -70,14 +70,12 @@ public class Scoreboard extends PlaceholderConsumer {
 
             var finalLines = getPlaceholders(player.player, lines);
             for (int i = 0; i < finalLines.size(); i++) {
-                var line = finalLines.get(i);
-                if (!player.board.getLine(i).equals(line)) {
-                    try {
-                        player.board.updateLine(i, line);
-                    } catch (IllegalArgumentException e) {
-                        // board size changed, most likely due to scoreboard change. Terminate and let the other scoreboard handle the updating.
-                        return;
-                    }
+                try {
+                    var line = finalLines.get(i);
+                    if (!player.board.getLine(i).equals(line)) player.board.updateLine(i, line);
+                } catch (IllegalArgumentException e) {
+                    // board size changed, most likely due to scoreboard change. Terminate and let the other scoreboard handle the updating.
+                    return;
                 }
             }
         }

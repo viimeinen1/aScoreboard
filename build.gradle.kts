@@ -1,5 +1,5 @@
 group = "io.github.viimeinen1.ascoreboard"
-version = "1.1.2"
+version = "1.1.3"
 description = "a Scoreboard plugin and library"
 
 plugins {
@@ -29,6 +29,7 @@ java {
 }
 
 tasks.shadowJar {
+  archiveClassifier.set("")
   relocate("fr.mrmicky.fastboard", "io.github.viimeinen1.ascoreboard.fastboard")
 }
 
